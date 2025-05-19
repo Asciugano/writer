@@ -1,3 +1,4 @@
+import cloudinary from "../lib/cloudinary.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
 import bycrypt from "bcryptjs";
@@ -46,10 +47,66 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = (req, res) => {
-  res.send("login route");
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Invalid credential" });
+    }
+
+    const isPasswdCorrect = await bycrypt.compare(password, user.password);
+    if (!isPasswdCorrect) {
+      return res.status(404).json({ message: "Invalid credential" });
+    }
+
+    generateToken(user._id, res);
+
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      profilePic: user.profilePic,
+    });
+  } catch (error) {
+    console.error("error in login controller ", error.meessage);
+    res.status(500).json({ message: "internal server error" });
+  }
 };
 
 export const logout = (req, res) => {
-  res.send("logout route");
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "logout succussfully" });
+  } catch (error) {
+    console.error("error in logout controller ", error.meessage);
+    res.status(500).json({ message: "internal server error" });
+  }
+};
+
+export const updateProfile = async (res, req) => {
+  try {
+    const { profilePic } = req.body;
+    const userID = req.user._id;
+
+    if (!profilePic) {
+      res.status(404).json({ message: "profile pic is required" });
+    }
+
+    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userID,
+      {
+        profilePic: uploadResponse.secure_url,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("error in updateProfile controller", error.meessage);
+    res.status(500).json({ message: "internal server error" });
+  }
 };
