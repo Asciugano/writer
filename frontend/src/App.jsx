@@ -10,9 +10,11 @@ import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import { useAuthStore } from "./store/useAuthStore";
+import { useThemeStore } from "./store/useThemeStore";
 
 export const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const {theme} = useThemeStore();
 
   useEffect(() => {
     checkAuth();
@@ -29,7 +31,7 @@ export const App = () => {
   }
 
   return (
-    <>
+    <div data-theme={theme}>
       <NavBar />
 
       <Routes>
@@ -53,7 +55,7 @@ export const App = () => {
       </Routes>
       
       <Toaster />
-    </>
+    </div>
   );
 };
 
