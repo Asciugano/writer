@@ -1,5 +1,7 @@
 import React from "react";
 
-const ChatContainer = () => {};
+const ChatContainer = () => {
+    return <>ChatContainer</>
+};
 
 export default ChatContainer;

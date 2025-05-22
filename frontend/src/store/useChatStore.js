@@ -14,7 +14,7 @@ export const useChatStore = create((set) => ({
     try {
       const res = await axiosInstace.get("/messages/users");
             console.log('res: ',res);
-      set({ users: res.data });
+      set({ users: res.data.filteredUsers });
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
