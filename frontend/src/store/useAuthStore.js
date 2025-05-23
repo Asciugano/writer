@@ -3,7 +3,8 @@ import { axiosInstace } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = "http://localhost:5001";
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -105,16 +106,15 @@ export const useAuthStore = create((set, get) => ({
   },
 
   disconnectSocket: () => {
-    const {socket} = get();
+    const { socket } = get();
 
-    if(socket?.connected) {
-      console.log('disconnessione socket...')
+    if (socket?.connected) {
+      console.log("disconnessione socket...");
       socket.disconnect();
+    } else {
+      console.log("socket gia disconnesso");
     }
-    else {
-      console.log('socket gia disconnesso')
-    }
-    
+
     set({ socket: null });
   },
 }));
