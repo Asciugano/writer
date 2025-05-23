@@ -25,10 +25,11 @@ export const useChatStore = create((set, get) => ({
   getMessages: async (userID) => {
     set({ isMessagesLoading: true });
     try {
-      const res = axiosInstace.get(`messages/${userID}`);
+      const res = await axiosInstace.get(`messages/${userID}`);
       set({ messages: res.data.messages });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "something went wrong");
+      console.error(error)
     } finally {
       set({ isMessagesLoading: false });
     }

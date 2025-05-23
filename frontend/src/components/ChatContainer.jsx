@@ -21,7 +21,7 @@ const ChatContainer = () => {
       <div className="flex-1 flex flex-col overflow-auto">
         <ChatHeader />
         <MessageSkeleton />
-        <MessageSkeleton />
+        <MessageInput />
       </div>
     );
 
