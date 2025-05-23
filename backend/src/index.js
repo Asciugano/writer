@@ -24,7 +24,9 @@ app.use(
   })
 );
 
+console.log("Registering auth routes")
 app.use("/api/auth", authRoutes);
+console.log("Registering message routes")
 app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
