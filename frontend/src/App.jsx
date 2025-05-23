@@ -13,14 +13,16 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useThemeStore } from "./store/useThemeStore";
 
 export const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-  const {theme} = useThemeStore();
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  const { theme } = useThemeStore();
+
+  console.log({ onlineUsers });
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log(authUser);
+  console.log({ authUser });
 
   if (isCheckingAuth && !authUser) {
     return (
@@ -53,7 +55,7 @@ export const App = () => {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
       </Routes>
-      
+
       <Toaster />
     </div>
   );
