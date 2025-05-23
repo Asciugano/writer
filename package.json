@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/Asciugano/writer/issues"
   },
-  "homepage": "https://github.com/Asciugano/writer#readme"
+  "homepage": "https://github.com/Asciugano/writer#readme",
+  "dependencies": {
+    "backend": "^0.0.0",
+    "express": "^5.1.0",
+    "path-to-regexp": "^8.2.0"
+  }
 }
